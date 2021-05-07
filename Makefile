@@ -1,9 +1,13 @@
-all: 01.syozoku.json 02.syozoku.json 03.syozoku.json 04.syozoku.json 05.syozoku.json 06.syozoku.json 07.syozoku.json 08.syozoku.json 09.syozoku.json 10.syozoku.json \
-	11.syozoku.json 12.syozoku.json 13.syozoku.json 14.syozoku.json 15.syozoku.json 16.syozoku.json 17.syozoku.json 18.syozoku.json 19.syozoku.json 20.syozoku.json \
-	21.syozoku.json 22.syozoku.json 23.syozoku.json 24.syozoku.json 25.syozoku.json 26.syozoku.json 27.syozoku.json 28.syozoku.json 29.syozoku.json 30.syozoku.json \
-	31.syozoku.json 32.syozoku.json 33.syozoku.json 34.syozoku.json 35.syozoku.json 36.syozoku.json 37.syozoku.json 38.syozoku.json 39.syozoku.json 40.syozoku.json
-
+all.txt: 01.user.jsonl 02.user.jsonl 03.user.jsonl 04.user.jsonl 05.user.jsonl 06.user.jsonl 07.user.jsonl 08.user.jsonl 09.user.jsonl 10.user.jsonl \
+	11.user.jsonl 12.user.jsonl 13.user.jsonl 14.user.jsonl 15.user.jsonl 16.user.jsonl 17.user.jsonl 18.user.jsonl 19.user.jsonl 20.user.jsonl \
+	21.user.jsonl 22.user.jsonl 23.user.jsonl 24.user.jsonl 25.user.jsonl 26.user.jsonl 27.user.jsonl 28.user.jsonl 29.user.jsonl 30.user.jsonl \
+	31.user.jsonl 32.user.jsonl 33.user.jsonl 34.user.jsonl 35.user.jsonl 36.user.jsonl 37.user.jsonl 38.user.jsonl 39.user.jsonl 40.user.jsonl
+	cat *.user.jsonl | jq -c '.name'  | grep -E -o 'Profile.+profile.html' | sed -e 's@^@https://yoran.office.ehime-u.ac.jp/@' | tee  $@
 
 %.syozoku.json:
 	curl -XPOST -o $@ -d dept_id=$(*F) -d MAX=200 -d major_id= -d kouza_id= -d PAGE= -d form_name=SYOZOKU -d lang=ja https://yoran.office.ehime-u.ac.jp/scripts/websearch/search.htm
+
+%.user.jsonl:
+	-cat $(*F).syozoku.json | jq -c '.user[]' >$@
+
 
